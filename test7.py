@@ -15,6 +15,7 @@ topic = "v1/devices/me/attributes" #This is the topic for attributes in thingsbo
 addr_extended = "\x00\x13\xa2\x00A'\xca\xe8"
 addr = "\xff\xfe"
 rpcTopic = "v1/devices/me/rpc/request/+"
+topicTelem = "v1/devices/me/telemetry"
 
 
 # The callback for when the client receives a CONNACK response from the server.
@@ -64,6 +65,7 @@ while True:
         #print response
         print message
         MQTT.publish(topic, message, qos=1, retain=False)
+        
         
 
     except KeyboardInterrupt:

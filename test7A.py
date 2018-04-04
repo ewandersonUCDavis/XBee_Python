@@ -1,19 +1,23 @@
-#This script basically does the same thing as test4.py, but the code has been cleaned up and it's designed to make the LED respond to a on/off switch instead of a GPIO switch on the thingsboard dashboard.
+#This script does the same thing as test6.py, but it connects to our own instance of thingsboard, not the test version provided by thingsboard ( "demo.thingsboard.io" )
 
 
 import serial
 from xbee import XBee, ZigBee
 import paho.mqtt.client as mqtt
 import json
+from random import *
 
-mqttBroker = "demo.thingsboard.io"
+
+#mqttBroker = "demo.thingsboard.io"
+mqttBroker = "192.155.83.191"
 mqttClientId     = "ewanderson"
-mqttUserName     = "HgQrDJl1F8Hgr1BpfT54" #this is an access token that will direct my data to a specific device on thingsboard HgQrDJl1F8Hgr1BpfT54
+mqttUserName     = "A3QMO5nbq9QnJ53A5w2k" #this is an access token that will direct my data to a specific device on thingsboard 
 
 topic = "v1/devices/me/attributes" #This is the topic for attributes in thingsboard  
 addr_extended = "\x00\x13\xa2\x00A'\xca\xe8"
 addr = "\xff\xfe"
 rpcTopic = "v1/devices/me/rpc/request/+"
+topicTelem = "v1/devices/me/telemetry"
 
 
 # The callback for when the client receives a CONNACK response from the server.
@@ -62,8 +66,13 @@ while True:
         message = str(IO_Data) #Convert IO_Data to a string (format required by publish).
         #print response
         print message
-        a = MQTT.publish(topic, message, qos=1, retain=False)
-        print(a.is_published())
+        MQTT.publish(topic, message, qos=1, retain=False)
+        
+        Power = randint(80, 100) #We're not actually measuring power at this point, so I'm going to generate a random number and pretent it's the production.
+        messageTelem = "{'Power': "+str(Power)+"}"
+        print(messageTelem)
+        print(topicTelem)
+        print(MQTT.publish(topicTelem, messageTelem, qos=1, retain=False))
         
 
     except KeyboardInterrupt:

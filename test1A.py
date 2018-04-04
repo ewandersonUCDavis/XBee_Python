@@ -4,7 +4,7 @@ import serial
 from xbee import XBee, ZigBee
 
 
-serial_port = serial.Serial('/dev/tty.usbserial-A505N9YU', 115200)
+serial_port = serial.Serial('/dev/tty.usbserial-A505N9YU', 9600) #Inputs are the port the local XBee is plugged into and the baud rate (BD) 
 xbee = ZigBee(serial_port) #Setting this up as an XBee object doesn't work. I think the XBee pros use the same APi frame as the Zigbees, not the API frame that earlier XBees used.
 
 while True:
@@ -16,13 +16,9 @@ while True:
         #print IO_Data #Print all configured pins and statuses
         #print IO_Data.get('dio-4') #print just, pin 4 status
         print response
-        print type(response)
+        #print type(response)
         if ('rf_data' in response):
         	rfDataStr = response.get('rf_data')
-        	print response['rf_data']
-        	print(response.get('rf_data'))
-        	#print(type(rfDataStr))
-        	#print len(rfDataStr)
         	print rfDataStr
 
         	#rfDataInt = int(rfDataStr,16)
