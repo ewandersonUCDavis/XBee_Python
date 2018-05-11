@@ -1,0 +1,34 @@
+@1 - Vcc
+2 - Tx (uart)
+3 - Rx (uart)
+~4 - stop button (DIO-12)
+5 - reset
+*6 - DIO-4 (Fault detection, potentially)
+~7 - start button (DIO-11)
+8 - BKGD (?)
+9 - DIO-8 (doesn't work for IO change detection)
+@10 - GND
+*11 - rotor brake (DIO-4)
+12 - DIO-7 (Interferes with microprocessor if I try to use it as an IO input)
+13 - DIO-9 (doesn't work for IO change detection)
+14 - Vcc REF (?)
+15 - Association pin
+*16 - DIO-6 (Fault detection, potentially)
+*17 - DIO-3 (Fault detection, potentially)
+*18 - DIO-2 (Fault detection, potentially)
+*19 - meter pulse counting (DIO-1)
+20 - commissioning pin
+
+*s need to be wired as input relays on the interface board
+~s need to be wired as output relays on the interface board
+@s need to be wired to power the XBee
+
+
+These pins need to be set up for DIO change detection sampling:
+*6 - DIO-4 (Fault detection, potentially)
+*11 - rotor brake (DIO-10)
+*12 - DIO-7 (Fault detection, potentially)
+*16 - DIO-6 (Fault detection, potentially)
+*17 - DIO-3 (Fault detection, potentially)
+*18 - DIO-2 (Fault detection, potentially)
+

@@ -1,5 +1,7 @@
 from digi.xbee.devices import XBeeDevice, RemoteXBeeDevice, XBee64BitAddress, XBeeMessage
 from struct import *
+import json
+from digi.xbee.io import IOLine, IOMode, IOValue
 
 xbee = XBeeDevice('/dev/tty.usbserial-A505N9YU', 9600)
 
@@ -11,32 +13,27 @@ try:
 
 
 	def data_receive_callback(xbee_message):
-		print("data recieved")
-		print(xbee_message)
-		print("1")
-		print(xbee_message.to_dict())
-		print("2")
-		print("From %s >> %s" % (xbee_message.remote_device.get_64bit_addr(), xbee_message.data.decode()))
-		print("3")
-		#print(xbee_message.data.decode())
-		#print("4")
-		print(xbee_message.data)
-		print(unpack('H',xbee_message.data)[0])
-		#print("From ",xbee_message.remote_device.get_64bit_addr()," >> ",unpack("h",xbee_message.data.decode()))
-		print("5")
-		print(xbee_message.data[1])
-		print((256*xbee_message.data[0]+xbee_message.data[1]))
-		mDict = xbee_message.to_dict()
-		print(mDict.get('Data: '))
-		print("6")
-		print(unpack("h",mDict.get('Data: '))[0])
-		print("7")
+			print("pulse count data recieved")
+			pulseCount = (256*xbee_message.data[0]+xbee_message.data[1])
+			print("From",xbee_message.remote_device.get_64bit_addr()," >> Pulse count = ",pulseCount)
+			print(xbee_message.remote_device.get_node_id())
+
 
 	def io_sample_callback(io_sample, remote_xbee, send_time):
-		print("IO sample:")
-		print("IO sample received at time %s." % str(send_time))
-		print("IO sample:")
-		print(str(io_sample))
+			print("IO sample:")
+			print("IO sample received at time %s." % str(send_time))
+			print("IO sample:")
+			print(str(io_sample))
+			print(str(remote_xbee))
+			print(type(remote_xbee))
+			print(remote_xbee.get_64bit_addr())
+			print(type(remote_xbee.get_64bit_addr()))
+			print(remote_xbee.get_node_id())
+			b = io_sample.get_digital_value(IOLine.DIO1_AD1)
+			print(b)
+			print(type(b))
+			if (b == IOValue.LOW):
+				print('Hi!')
 
 
 	xbee.add_data_received_callback(data_receive_callback)
@@ -48,6 +45,11 @@ try:
 	input()
 
 finally:
+	print('finally')
+	stop = True
 	if xbee is not None and xbee.is_open():
+		print('closing xbee')
 		xbee.close()
+		print('xbee closed')
+		
 
